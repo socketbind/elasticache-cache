@@ -15,20 +15,13 @@
  */
 package org.mybatis.caches.memcached;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
 import net.spy.memcached.CachedData;
 import net.spy.memcached.transcoders.Transcoder;
-
 import org.apache.ibatis.cache.CacheException;
+
+import java.io.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * The Transcoder that compress and decompress the stored objects using the
@@ -63,7 +56,7 @@ final class CompressorTranscoder implements Transcoder<Object> {
 
         try {
             gzis = new GZIPInputStream(bais);
-            ois = new ObjectInputStream(gzis);
+            ois = new ContextClassLoaderObjectInputStream(gzis);
             ret = ois.readObject();
         } catch (Exception e) {
             throw new CacheException("Impossible to decompress cached object, see nested exceptions", e);
@@ -89,8 +82,8 @@ final class CompressorTranscoder implements Transcoder<Object> {
             oos.writeObject(object);
         } catch (IOException e) {
             throw new CacheException("Impossible to compress object ["
-                        + object
-                        + "], see nested exceptions", e);
+                    + object
+                    + "], see nested exceptions", e);
         } finally {
             closeQuietly(oos);
             closeQuietly(gzops);

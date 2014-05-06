@@ -15,17 +15,16 @@
  */
 package org.mybatis.caches.memcached;
 
+import net.spy.memcached.MemcachedClient;
+import org.apache.ibatis.cache.CacheException;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Future;
-
-import net.spy.memcached.MemcachedClient;
-
-import org.apache.ibatis.cache.CacheException;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
 
 /**
  * @author Simone Tripodi
@@ -58,7 +57,7 @@ final class MemcachedClientWrapper {
 
     /**
      * Converts the MyBatis object key in the proper string representation.
-     * 
+     *
      * @param key the MyBatis object key.
      * @return the proper string representation.
      */
@@ -75,7 +74,6 @@ final class MemcachedClientWrapper {
     }
 
     /**
-     *
      * @param key
      * @return
      */
@@ -136,8 +134,6 @@ final class MemcachedClientWrapper {
     }
 
     /**
-     *
-     *
      * @param keyString
      * @return
      * @throws Exception
@@ -150,7 +146,7 @@ final class MemcachedClientWrapper {
             if (configuration.isCompressionEnabled()) {
                 future = client.asyncGet(keyString, new CompressorTranscoder());
             } else {
-                future = client.asyncGet(keyString);
+                future = client.asyncGet(keyString, new ContextClassLoaderTranscoder());
             }
 
             try {
@@ -163,7 +159,7 @@ final class MemcachedClientWrapper {
             if (configuration.isCompressionEnabled()) {
                 retrieved = client.get(keyString, new CompressorTranscoder());
             } else {
-                retrieved = client.get(keyString);
+                retrieved = client.get(keyString, new ContextClassLoaderTranscoder());
             }
         }
 
@@ -206,7 +202,7 @@ final class MemcachedClientWrapper {
      * Stores an object identified by a key in Memcached.
      *
      * @param keyString the object key
-     * @param value the object has to be stored.
+     * @param value     the object has to be stored.
      */
     private void storeInMemcached(String keyString, Object value) {
         if (value != null
@@ -219,7 +215,7 @@ final class MemcachedClientWrapper {
         if (configuration.isCompressionEnabled()) {
             client.set(keyString, configuration.getExpiration(), value, new CompressorTranscoder());
         } else {
-            client.set(keyString, configuration.getExpiration(), value);
+            client.set(keyString, configuration.getExpiration(), value, new ContextClassLoaderTranscoder());
         }
     }
 
