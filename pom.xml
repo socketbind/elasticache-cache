@@ -25,11 +25,11 @@
     </parent>
 
     <groupId>org.mybatis.caches</groupId>
-    <artifactId>mybatis-memcached</artifactId>
+    <artifactId>mybatis-elasticache</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>MyBatis Caches :: Memcached</name>
+    <name>MyBatis Caches :: Elasticache</name>
     <description>Memcached support for MyBatis Cache</description>
     <url>http://www.mybatis.org/caches/memcached/</url>
 

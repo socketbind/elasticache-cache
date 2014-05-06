@@ -1,1 +1,10 @@
-Memcached support for MyBatis Cache
+Elasticache support for MyBatis Cache
+
+Based on the work of the original MyBatis Memcache Client.
+
+My changes are nothing special and somewhat hacky:
+* The Elasticache client provided by Amazon is just a custom version of spymemcached with node auto discovery. Dropping in the library breaks the tests because the custom client presumes that your local target server is auto-discovery capable. There is an ugly hack that tries to fix this.
+* I had some issues with the system classloader when using the live reload feature of Play Framework. Contains my attempt of fixing that.
+* The ability to set memcached configuration parameters with system properties. This makes it a little bit easier to deploy stuff on Elastic Beanstalk for me.
+
+I'm in no way affiliated with the MyBatis project and this is NOT an official release.
