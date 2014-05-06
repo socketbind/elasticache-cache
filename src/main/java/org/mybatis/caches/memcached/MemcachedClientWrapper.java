@@ -15,14 +15,18 @@
  */
 package org.mybatis.caches.memcached;
 
+import net.spy.memcached.ClientMode;
+import net.spy.memcached.ConnectionFactory;
 import net.spy.memcached.MemcachedClient;
 import org.apache.ibatis.cache.CacheException;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.net.InetSocketAddress;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Future;
 
@@ -43,9 +47,11 @@ final class MemcachedClientWrapper {
     public MemcachedClientWrapper() {
         configuration = MemcachedConfigurationBuilder.getInstance().parseConfiguration();
         try {
+            determineClientMode(configuration.getConnectionFactory(), configuration.getAddresses());
+
             client = new MemcachedClient(configuration.getConnectionFactory(), configuration.getAddresses());
-        } catch (IOException e) {
-            String message = "Impossible to instantiate a new memecached client instance, see nested exceptions";
+        } catch (Exception e) {
+            String message = "Impossible to instantiate a new memcached client instance, see nested exceptions";
             log.error(message, e);
             throw new RuntimeException(message, e);
         }
@@ -53,6 +59,22 @@ final class MemcachedClientWrapper {
         if (log.isDebugEnabled()) {
             log.debug("Running new Memcached client using " + configuration);
         }
+    }
+
+    private void determineClientMode(ConnectionFactory connectionFactory, List<InetSocketAddress> addrs) throws NoSuchFieldException, IllegalAccessException {
+        ClientMode clientMode = ClientMode.Static;
+
+        if (addrs.size() == 1) {
+            String hostName = addrs.get(0).getHostName();
+            if (hostName != null && hostName.contains(".cfg.")) {
+                clientMode = ClientMode.Dynamic;
+            }
+        }
+
+        // I know this is ugly but I want to preserve all the functionality
+        Field clientModeField = connectionFactory.getClass().getDeclaredField("clientMode");
+        clientModeField.setAccessible(true);
+        clientModeField.set(connectionFactory, clientMode);
     }
 
     /**
