@@ -73,7 +73,7 @@ abstract class AbstractPropertySetter<T> {
     /**
      * Build a new property setter.
      *
-     * @param propertyKey the Config property key.
+     * @param propertyKey  the Config property key.
      * @param propertyName the {@link MemcachedConfiguration} property name.
      * @param defaultValue the property default value.
      */
@@ -97,7 +97,7 @@ abstract class AbstractPropertySetter<T> {
      * Extract a property from the, converts and puts it to the
      * {@link MemcachedConfiguration}.
      *
-     * @param config the Config
+     * @param config                 the Config
      * @param memcachedConfiguration the {@link MemcachedConfiguration}
      */
     public final void set(Properties config, MemcachedConfiguration memcachedConfiguration) {
@@ -126,6 +126,10 @@ abstract class AbstractPropertySetter<T> {
                     + propertyValue
                     + ")", e);
         }
+    }
+
+    String getPropertyKey() {
+        return propertyKey;
     }
 
     /**

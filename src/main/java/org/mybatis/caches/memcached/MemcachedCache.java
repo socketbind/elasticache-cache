@@ -15,9 +15,9 @@
  */
 package org.mybatis.caches.memcached;
 
-import java.util.concurrent.locks.ReadWriteLock;
-
 import org.apache.ibatis.cache.Cache;
+
+import java.util.concurrent.locks.ReadWriteLock;
 
 /**
  * The Memcached-based Cache implementation.
@@ -26,7 +26,7 @@ import org.apache.ibatis.cache.Cache;
  */
 public final class MemcachedCache implements Cache {
 
-    private static final MemcachedClientWrapper MEMCACHED_CLIENT = new MemcachedClientWrapper();
+    private static MemcachedClientWrapper MEMCACHED_CLIENT = new MemcachedClientWrapper();
 
     /**
      * The {@link ReadWriteLock}.
@@ -51,7 +51,7 @@ public final class MemcachedCache implements Cache {
      * {@inheritDoc}
      */
     public void clear() {
-        MEMCACHED_CLIENT.removeGroup(this.id);
+        getClient().removeGroup(this.id);
     }
 
     /**
@@ -65,7 +65,7 @@ public final class MemcachedCache implements Cache {
      * {@inheritDoc}
      */
     public Object getObject(Object key) {
-        return MEMCACHED_CLIENT.getObject(key);
+        return getClient().getObject(key);
     }
 
     /**
@@ -86,14 +86,25 @@ public final class MemcachedCache implements Cache {
      * {@inheritDoc}
      */
     public void putObject(Object key, Object value) {
-        MEMCACHED_CLIENT.putObject(key, value, this.id);
+        getClient().putObject(key, value, this.id);
     }
 
     /**
      * {@inheritDoc}
      */
     public Object removeObject(Object key) {
-        return MEMCACHED_CLIENT.removeObject(key);
+        return getClient().removeObject(key);
+    }
+
+    private static MemcachedClientWrapper getClient() {
+        if (MEMCACHED_CLIENT == null) {
+            MEMCACHED_CLIENT = new MemcachedClientWrapper();
+        }
+        return MEMCACHED_CLIENT;
+    }
+
+    public static void setClient(MemcachedClientWrapper wrapper) {
+        MEMCACHED_CLIENT = wrapper;
     }
 
 }
