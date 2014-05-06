@@ -29,30 +29,16 @@
     <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>MyBatis Caches :: Elasticache</name>
-    <description>Memcached support for MyBatis Cache</description>
-    <url>http://www.mybatis.org/caches/memcached/</url>
+    <name>MyBatis Caches :: Elasticache (Memcached)</name>
+    <description>Elasticache (memcached) support for MyBatis Cache</description>
+    <url>http://github.com/socketbind/elasticache-cache/</url>
 
     <scm>
-        <url>http://github.com/mybatis/memcached-cache</url>
-        <connection>scm:git:ssh://github.com/mybatis/memcached-cache.git</connection>
-        <developerConnection>scm:git:git+ssh://git@github.com/mybatis/memcached-cache.git</developerConnection>
+        <url>http://github.com/socketbind/elasticache-cache</url>
+        <connection>scm:git:ssh://github.com/socketbind/elasticache-cache.git</connection>
+        <developerConnection>scm:git:git+ssh://git@github.com/socketbind/elasticache-cache.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-    <issueManagement>
-        <system>GitHub Issue Management</system>
-        <url>https://github.com/mybatis/memcached-cache/issues</url>
-    </issueManagement>
-    <ciManagement>
-        <system>Travis CI</system>
-        <url>https://travis-ci.org/memcached-cache/guice</url>
-    </ciManagement>
-    <distributionManagement>
-        <site>
-            <id>github</id>
-            <url>gitsite:git@github.com/mybatis/memcached-cache.git</url>
-        </site>
-    </distributionManagement>
 
     <properties>
         <findbugs.onlyAnalyze>org.mybatis.caches.memcached.*</findbugs.onlyAnalyze>
@@ -90,18 +76,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>spy</id>
-            <name>Spy Repository</name>
-            <layout>default</layout>
-            <url>http://files.couchbase.com/maven2/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>
