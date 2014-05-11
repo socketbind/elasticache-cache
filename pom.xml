@@ -73,6 +73,20 @@
             <artifactId>elasticache-java-cluster-client</artifactId>
             <version>1.0.61.0</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>jmock</groupId>
+                    <artifactId>jmock</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jmock</groupId>
+                    <artifactId>jmock-cglib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit-dep</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--
