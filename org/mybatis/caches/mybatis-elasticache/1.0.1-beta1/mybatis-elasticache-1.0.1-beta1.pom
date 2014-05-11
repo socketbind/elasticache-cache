@@ -26,7 +26,7 @@
 
     <groupId>org.mybatis.caches</groupId>
     <artifactId>mybatis-elasticache</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1-beta1</version>
     <packaging>jar</packaging>
 
     <name>MyBatis Caches :: Elasticache (Memcached)</name>
