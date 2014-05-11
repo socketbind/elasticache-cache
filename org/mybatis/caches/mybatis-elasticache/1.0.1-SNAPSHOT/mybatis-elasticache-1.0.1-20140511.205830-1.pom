@@ -51,6 +51,7 @@
     <properties>
         <findbugs.onlyAnalyze>org.mybatis.caches.memcached.*</findbugs.onlyAnalyze>
         <gcu.product>Cache</gcu.product>
+        <github.global.server>github</github.global.server>
     </properties>
 
     <dependencies>
@@ -72,6 +73,20 @@
             <artifactId>elasticache-java-cluster-client</artifactId>
             <version>1.0.61.0</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>jmock</groupId>
+                    <artifactId>jmock</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jmock</groupId>
+                    <artifactId>jmock-cglib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit-dep</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--
@@ -98,8 +113,40 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.1</version>
                 <configuration>
-                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo
+                    </altDeploymentRepository>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.9</version>
+                <configuration>
+                    <message>Maven artifacts for ${project.version}</message>
+                    <!-- git commit message -->
+                    <noJekyll>true</noJekyll>
+                    <!-- disable webpage processing -->
+                    <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+                    <!-- matches distribution management repository url above -->
+                    <branch>refs/heads/mvn-repo</branch>
+                    <!-- remote branch name -->
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                    <repositoryName>elasticache-cache</repositoryName>
+                    <!-- github repo name -->
+                    <repositoryOwner>socketbind</repositoryOwner>
+                    <!-- github username  -->
+                </configuration>
+                <executions>
+                    <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
