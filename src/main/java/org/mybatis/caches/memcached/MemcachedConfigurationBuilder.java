@@ -113,16 +113,16 @@ final class MemcachedConfigurationBuilder {
 
         MemcachedConfiguration memcachedConfiguration = new MemcachedConfiguration();
 
-        for (AbstractPropertySetter<?> setter : settersRegistry) {
-            setter.set(config, memcachedConfiguration);
-        }
-
         // merge in system properties if any, this is mostly useful on elastic beanstalk
         for (AbstractPropertySetter<?> setter : settersRegistry) {
             String systemPropertyValue = System.getProperty(setter.getPropertyKey());
             if (systemPropertyValue != null) {
                 config.put(setter.getPropertyKey(), systemPropertyValue);
             }
+        }
+
+        for (AbstractPropertySetter<?> setter : settersRegistry) {
+            setter.set(config, memcachedConfiguration);
         }
 
         return memcachedConfiguration;
