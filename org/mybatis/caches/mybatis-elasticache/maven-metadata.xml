@@ -3,10 +3,9 @@
   <groupId>org.mybatis.caches</groupId>
   <artifactId>mybatis-elasticache</artifactId>
   <versioning>
-    <release>1.0.1-beta2</release>
     <versions>
-      <version>1.0.1-beta2</version>
+      <version>1.0.1-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20140511225646</lastUpdated>
+    <lastUpdated>20140606224528</lastUpdated>
   </versioning>
 </metadata>
